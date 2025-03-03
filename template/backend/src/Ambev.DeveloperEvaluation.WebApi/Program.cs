@@ -9,6 +9,8 @@ using Ambev.DeveloperEvaluation.WebApi.Middleware;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using Rebus.Bus;
+using Rebus.Config;
 
 namespace Ambev.DeveloperEvaluation.WebApi;
 
@@ -50,6 +52,11 @@ public class Program
                 );
             });
 
+            // Adicionando rebus à aplicação com configuração para o RabbitMQ
+            builder.Services.AddRebus(config => config
+            .Transport(t => t.UseRabbitMq("amqp://guest:guest@localhost:5672", "DeveloperEvaluationQueue"))
+            .Logging(l => l.Console()));
+
             builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
             var app = builder.Build();
@@ -69,6 +76,8 @@ public class Program
             app.UseBasicHealthChecks();
 
             app.MapControllers();
+
+            app.Services.GetRequiredService<IBus>().Subscribe<string>().Wait();
 
             app.Run();
         }
