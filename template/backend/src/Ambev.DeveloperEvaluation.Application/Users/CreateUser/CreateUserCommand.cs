@@ -35,6 +35,8 @@ public class CreateUserCommand : IRequest<CreateUserResult>
     /// </summary>
     public string Phone { get; set; } = string.Empty;
 
+    public string Name { get; set; } = string.Empty;
+
     /// <summary>
     /// Gets or sets the email address for the user.
     /// </summary>
