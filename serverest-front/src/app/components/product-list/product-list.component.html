@@ -1,0 +1,25 @@
+<div class="container">
+  <h2>Lista de Produtos</h2>
+
+  <button class="btn-button-info" (click)="goToUsers()">Voltar para Lista de Usuários</button>
+
+  <div *ngIf="isLoading" class="loading">Carregando produtos...</div>
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+
+  <div *ngIf="products.length > 0; else noProducts">
+    <div class="product-grid">
+      <div *ngFor="let product of products" class="product-card">
+        <h3>{{ product.nome }}</h3>
+        <p class="product-description"><strong>Descrição:</strong> {{ product.descricao }}</p>
+        <p><strong>Preço:</strong> R$ {{ product.preco }}</p>
+        <p><strong>Quantidade:</strong> {{ product.quantidade }}</p>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noProducts>
+    <p class="no-products">Nenhum produto disponível.</p>
+  </ng-template>
+</div>
+
+<router-outlet />
